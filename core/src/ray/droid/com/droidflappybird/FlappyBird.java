@@ -38,9 +38,9 @@ public class FlappyBird extends ApplicationAdapter {
     private float espacoEntreCanos;
     private float deltaTime;
     private float alturaEntreCanosRandomica;
-    private int estadoJogo = 0;
+    private static int estadoJogo = 0;
     private int tocouDuasVezes = 0;
-    private int pontuacao = 0;
+    private static int pontuacao = 0;
     private BitmapFont fonte;
     private BitmapFont mensagem;
     private boolean marcouPonto = false;
@@ -53,6 +53,10 @@ public class FlappyBird extends ApplicationAdapter {
     private Viewport viewport;
     private final float VIRTUAL_WIDTH = 600;
     private final float VIRTUAL_HEIGHT = 800;
+
+
+
+
 
     @Override
     public void create() {
@@ -138,7 +142,18 @@ public class FlappyBird extends ApplicationAdapter {
                 }
             } else // Game over
             {
+//                /Dados dados = new Dados();
+              //  Dados.GravarPlacar(getBaseContext());
+
+                pause();
+
+
+
+
+
                 if (Gdx.input.justTouched()) {
+
+
 
                     if (tocouDuasVezes == 1) {
                         tocouDuasVezes = 0;
@@ -216,5 +231,17 @@ public class FlappyBird extends ApplicationAdapter {
         passaros[0].dispose();
         passaros[1].dispose();
         passaros[2].dispose();
+    }
+
+    public static int Pontuacao()
+    {
+        return pontuacao;
+    }
+
+    public static boolean GameOver()
+    {
+        return estadoJogo == 2;
+
+
     }
 }
