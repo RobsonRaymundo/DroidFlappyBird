@@ -15,6 +15,8 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class FlappyBird extends ApplicationAdapter {
@@ -43,6 +45,7 @@ public class FlappyBird extends ApplicationAdapter {
     private static int pontuacao = 0;
     private BitmapFont fonte;
     private BitmapFont mensagem;
+    private BitmapFont placar;
     private boolean marcouPonto = false;
     private Circle passaroCirculo;
     private Rectangle retanguloCanoTopo;
@@ -54,8 +57,20 @@ public class FlappyBird extends ApplicationAdapter {
     private final float VIRTUAL_WIDTH = 600;
     private final float VIRTUAL_HEIGHT = 800;
 
+    public static List<Jogador> jogadores = new ArrayList<Jogador>();
+    public static boolean VerPlacar;
 
+    private String ListaJogadores ()
+    {
+        String lista = "";
 
+        for (Jogador jogador : jogadores) {
+            lista += " " + jogador.getPontos() + " =  " + jogador.getNome() + "\n";
+        }
+
+        return lista;
+
+    }
 
 
     @Override
@@ -75,6 +90,10 @@ public class FlappyBird extends ApplicationAdapter {
         mensagem = new BitmapFont();
         mensagem.setColor(Color.WHITE);
         mensagem.getData().setScale(3);
+
+        placar = new BitmapFont();
+        placar.setColor(Color.WHITE);
+        placar.getData().setScale(3);
 
         passaros[0] = new Texture("passaro1.png");
         passaros[1] = new Texture("passaro2.png");
@@ -122,6 +141,7 @@ public class FlappyBird extends ApplicationAdapter {
 
             if (estadoJogo == 1) // jogo iniciado
             {
+                VerPlacar = true;
                 posicaoMovimentoCanoHorizontal -= deltaTime * 200;
                 if (Gdx.input.justTouched()) {
                     velocidadeQueda = -15;
@@ -145,7 +165,7 @@ public class FlappyBird extends ApplicationAdapter {
 //                /Dados dados = new Dados();
               //  Dados.GravarPlacar(getBaseContext());
 
-                pause();
+
 
 
 
@@ -179,7 +199,12 @@ public class FlappyBird extends ApplicationAdapter {
 
         if (estadoJogo == 2) {
             batch.draw(gameOver, larguraDispositivo / 2 - gameOver.getWidth() / 2, alturaDispositivo / 2);
+
+
             if (tocouDuasVezes == 1) {
+
+                pause();
+                placar.draw(batch, ListaJogadores(), larguraDispositivo / 2 - 200, alturaDispositivo - 150 );
                 mensagem.draw(batch, "Toque para reiniciar", larguraDispositivo / 2 - 200, alturaDispositivo / 2 - gameOver.getHeight() / 2);
             }
         }

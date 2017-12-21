@@ -1,6 +1,8 @@
 package ray.droid.com.droidflappybird;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.telephony.TelephonyManager;
 
@@ -16,19 +18,26 @@ import java.security.Timestamp;
 import ray.droid.com.droidflappybird.FlappyBird;
 
 
-public class AndroidLauncher extends AndroidApplication {
+public class AndroidLauncher extends AndroidApplication  {
     private ApplicationListener applicationListener;
+    private Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        context = getBaseContext();
+        Dados.LerPontuacao(getBaseContext());
         AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
 
         applicationListener = new FlappyBird() {
 
             @Override
             public void pause() {
-                Dados.GravarPontuacao(getBaseContext(), FlappyBird.Pontuacao());
+                if (FlappyBird.VerPlacar) {
+                    FlappyBird.VerPlacar = false;
+                    Dados.GravarPontuacao(context, FlappyBird.Pontuacao());
+                    Dados.ExibePontuacao(context);
+                }
             }
 
             @Override
@@ -38,6 +47,8 @@ public class AndroidLauncher extends AndroidApplication {
 
         };
 
+
+
         initialize(applicationListener, config);
 
 
@@ -45,7 +56,7 @@ public class AndroidLauncher extends AndroidApplication {
 
     @Override
     protected void onDestroy() {
-        Dados.GravarPontuacao(getBaseContext(), FlappyBird.Pontuacao());
+   //     Dados.GravarPontuacao(getBaseContext(), FlappyBird.Pontuacao());
         super.onDestroy();
     }
 
