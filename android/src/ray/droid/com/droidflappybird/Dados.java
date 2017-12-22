@@ -73,23 +73,18 @@ public class Dados  {
     public static void GravarPontuacao(Context context, int pontos)
     {
         if (FlappyBird.Pontuacao() >= Dados.PontuacaoAtual) {
-            DatabaseReference databaseReferencia = FirebaseDatabase.getInstance().getReference();
-            DatabaseReference jogadorReferencia = databaseReferencia.child("jogadores");
 
             Jogador jogador = new Jogador();
             jogador.setNome(getAccount(context));
             jogador.setPontos(pontos);
+            FireBase.jogadorReferencia().child(getIDDevice(context)).setValue(jogador);
 
-            jogadorReferencia.child(getIDDevice(context)).setValue(jogador);
         }
     }
 
     public static void LerPontuacao(Context context)
     {
-        DatabaseReference databaseReferencia = FirebaseDatabase.getInstance().getReference();
-        DatabaseReference jogadorReferencia = databaseReferencia.child("jogadores").child(getIDDevice(context)).child("pontos");
-
-        jogadorReferencia.addValueEventListener(new ValueEventListener() {
+        FireBase.jogadorReferencia().child(getIDDevice(context)).child("pontos").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.getValue() != null) {
@@ -107,9 +102,7 @@ public class Dados  {
 
     public static void ExibePontuacao(Context context)
     {
-        DatabaseReference databaseReferencia = FirebaseDatabase.getInstance().getReference();
-        DatabaseReference jogadorReferencia = databaseReferencia.child("jogadores");
-        jogadorReferencia.addValueEventListener(new ValueEventListener() {
+        FireBase.jogadorReferencia().addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
