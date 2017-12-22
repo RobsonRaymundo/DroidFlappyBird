@@ -78,7 +78,7 @@ public class Dados  {
 
             Jogador jogador = new Jogador();
             jogador.setNome(getAccount(context));
-            jogador.setPontos(String.valueOf(pontos));
+            jogador.setPontos(pontos);
 
             jogadorReferencia.child(getIDDevice(context)).setValue(jogador);
         }
@@ -118,6 +118,11 @@ public class Dados  {
                 //    for (DataSnapshot ds2 : ds1.getChildren()) {
                     FlappyBird.jogadores.add(ds1.getValue(Jogador.class));
                   //  }
+                    if (FlappyBird.jogadores.size() > 14)
+                    {
+                        break;
+                    }
+
                 }
 
                 Collections.sort( FlappyBird.jogadores, Collections.reverseOrder());

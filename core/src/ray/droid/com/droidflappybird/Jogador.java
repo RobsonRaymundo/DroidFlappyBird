@@ -6,7 +6,7 @@ package ray.droid.com.droidflappybird;
 
 public class Jogador implements Comparable<Jogador>  {
     private String nome;
-    private String pontos;
+    private int pontos;
 
     public Jogador() {
     }
@@ -19,17 +19,17 @@ public class Jogador implements Comparable<Jogador>  {
         this.nome = nome;
     }
 
-    public String getPontos() {
+    public int getPontos() {
         return pontos;
     }
 
-    public void setPontos(String pontos) {
+    public void setPontos(int pontos) {
         this.pontos = pontos;
     }
 
     @Override
     public int compareTo(Jogador jogador) {
-        return  this.getPontos().compareTo(jogador.getPontos());
+        return  this.getPontos() - jogador.getPontos();
     }
 
 }
