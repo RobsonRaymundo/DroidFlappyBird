@@ -4,9 +4,9 @@ package ray.droid.com.droidflappybird;
  * Created by Robson on 20/12/2017.
  */
 
-public class Jogador {
+public class Jogador implements Comparable<Jogador>  {
     private String nome;
-    private int pontos;
+    private String pontos;
 
     public Jogador() {
     }
@@ -19,11 +19,17 @@ public class Jogador {
         this.nome = nome;
     }
 
-    public int getPontos() {
+    public String getPontos() {
         return pontos;
     }
 
-    public void setPontos(int pontos) {
+    public void setPontos(String pontos) {
         this.pontos = pontos;
     }
+
+    @Override
+    public int compareTo(Jogador jogador) {
+        return  this.getPontos().compareTo(jogador.getPontos());
+    }
+
 }

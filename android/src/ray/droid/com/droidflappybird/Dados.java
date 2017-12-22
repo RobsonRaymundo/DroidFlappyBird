@@ -16,6 +16,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.regex.Pattern;
 
 /**
@@ -71,13 +72,13 @@ public class Dados  {
 
     public static void GravarPontuacao(Context context, int pontos)
     {
-        if (FlappyBird.Pontuacao() > Dados.PontuacaoAtual) {
+        if (FlappyBird.Pontuacao() >= Dados.PontuacaoAtual) {
             DatabaseReference databaseReferencia = FirebaseDatabase.getInstance().getReference();
             DatabaseReference jogadorReferencia = databaseReferencia.child("jogadores");
 
             Jogador jogador = new Jogador();
             jogador.setNome(getAccount(context));
-            jogador.setPontos(pontos);
+            jogador.setPontos(String.valueOf(pontos));
 
             jogadorReferencia.child(getIDDevice(context)).setValue(jogador);
         }
@@ -118,6 +119,9 @@ public class Dados  {
                     FlappyBird.jogadores.add(ds1.getValue(Jogador.class));
                   //  }
                 }
+
+                Collections.sort( FlappyBird.jogadores, Collections.reverseOrder());
+
 
             }
 

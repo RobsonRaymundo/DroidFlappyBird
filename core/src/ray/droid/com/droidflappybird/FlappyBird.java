@@ -16,6 +16,7 @@ import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -46,6 +47,7 @@ public class FlappyBird extends ApplicationAdapter {
     private BitmapFont fonte;
     private BitmapFont mensagem;
     private BitmapFont placar;
+    private BitmapFont tituloPlacarGeral;
     private boolean marcouPonto = false;
     private Circle passaroCirculo;
     private Rectangle retanguloCanoTopo;
@@ -60,8 +62,7 @@ public class FlappyBird extends ApplicationAdapter {
     public static List<Jogador> jogadores = new ArrayList<Jogador>();
     public static boolean VerPlacar;
 
-    private String ListaJogadores ()
-    {
+    private String ListaJogadores() {
         String lista = "";
 
         for (Jogador jogador : jogadores) {
@@ -89,11 +90,15 @@ public class FlappyBird extends ApplicationAdapter {
 
         mensagem = new BitmapFont();
         mensagem.setColor(Color.WHITE);
-        mensagem.getData().setScale(3);
+        mensagem.getData().setScale(2);
+
+        tituloPlacarGeral = new BitmapFont();
+        tituloPlacarGeral.setColor(Color.GREEN);
+        tituloPlacarGeral.getData().setScale(2);
 
         placar = new BitmapFont();
         placar.setColor(Color.WHITE);
-        placar.getData().setScale(3);
+        placar.getData().setScale(2);
 
         passaros[0] = new Texture("passaro1.png");
         passaros[1] = new Texture("passaro2.png");
@@ -163,16 +168,10 @@ public class FlappyBird extends ApplicationAdapter {
             } else // Game over
             {
 //                /Dados dados = new Dados();
-              //  Dados.GravarPlacar(getBaseContext());
-
-
-
-
-
+                //  Dados.GravarPlacar(getBaseContext());
 
 
                 if (Gdx.input.justTouched()) {
-
 
 
                     if (tocouDuasVezes == 1) {
@@ -195,17 +194,19 @@ public class FlappyBird extends ApplicationAdapter {
         batch.draw(canoTopo, posicaoMovimentoCanoHorizontal, alturaDispositivo / 2 + espacoEntreCanos / 2 + alturaEntreCanosRandomica);
         batch.draw(canoBaixo, posicaoMovimentoCanoHorizontal, alturaDispositivo / 2 - canoBaixo.getHeight() - espacoEntreCanos / 2 + alturaEntreCanosRandomica);
         batch.draw(passaros[(int) variacao], 120, posicaoInicialVertical);
-        fonte.draw(batch, String.valueOf(pontuacao), larguraDispositivo / 2, alturaDispositivo - 50);
 
-        if (estadoJogo == 2) {
-            batch.draw(gameOver, larguraDispositivo / 2 - gameOver.getWidth() / 2, alturaDispositivo / 2);
-
-
-            if (tocouDuasVezes == 1) {
-
+        if (estadoJogo == 1) {
+            fonte.draw(batch, String.valueOf(pontuacao), larguraDispositivo / 2, alturaDispositivo - 50);
+        } else if (estadoJogo == 2) {
+            if (tocouDuasVezes == 0) {
+                batch.draw(gameOver, larguraDispositivo / 2 - gameOver.getWidth() / 2, alturaDispositivo / 2);
+                mensagem.draw(batch, "Toque para exibir o placar geral", larguraDispositivo / 2 - 200, gameOver.getHeight());
+            } else {
                 pause();
-                placar.draw(batch, ListaJogadores(), larguraDispositivo / 2 - 200, alturaDispositivo - 150 );
-                mensagem.draw(batch, "Toque para reiniciar", larguraDispositivo / 2 - 200, alturaDispositivo / 2 - gameOver.getHeight() / 2);
+                tituloPlacarGeral.draw(batch, "PLACAR GERAL ONLINE", larguraDispositivo / 2 - 200, alturaDispositivo - 80);
+                placar.draw(batch, ListaJogadores(), larguraDispositivo / 2 - 200, alturaDispositivo - 150);
+                mensagem.draw(batch, "Toque para reiniciar o jogo", larguraDispositivo / 2 - 200,  gameOver.getHeight());
+
             }
         }
 
@@ -258,13 +259,11 @@ public class FlappyBird extends ApplicationAdapter {
         passaros[2].dispose();
     }
 
-    public static int Pontuacao()
-    {
-        return pontuacao;
+    public static int Pontuacao() {
+        return (pontuacao);
     }
 
-    public static boolean GameOver()
-    {
+    public static boolean GameOver() {
         return estadoJogo == 2;
 
 
